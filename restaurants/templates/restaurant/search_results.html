@@ -23,9 +23,11 @@
             {{r.price_level|dollar_sign}}
         </td>
         <td>
-            <button class="btn btn-warning">Add</button>
+            <a class="add" href="{% url 'add_restaurant' %}?icon={{r.icon}}&name={{r.name}}&rating={{r.rating}}&price_level={{r.price_level}}"><button class="btn btn-warning">Add</button></a>
         </td>
     </tr>
     {% endfor %}
 </table>
+
 {% endblock %}
+
