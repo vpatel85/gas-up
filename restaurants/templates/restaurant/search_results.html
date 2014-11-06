@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load restaurant_list %}
+{% block content %}
+<table id="search-results" class="table table-hover table-condensed" style="vertical-align: middle;">
+    <thead>
+        <th>&nbsp;</th>
+        <th>Name</th>
+        <th>Rating</th>
+        <th>Price</th>
+    </thead>
+    {% for r in results %} 
+    <tr>
+        <td>
+            <img src="{{r.icon}}" height="20px" width="20px"/><br>
+        </td>
+        <td>
+            {{r.name}}
+        </td>
+        <td>
+            {{r.rating}}
+        </td>
+        <td>
+            {{r.price_level|dollar_sign}}
+        </td>
+        <td>
+            <button class="btn btn-warning">Add</button>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
