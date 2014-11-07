@@ -2,14 +2,14 @@ import json
 import urllib
 import requests
 from django.http import HttpResponse
-from django.views.generic import View, FormView, ListView
+from django.views.generic import View, FormView, ListView, DetailView
 from django.shortcuts import render, redirect
 from .forms import SearchForm
 from .models import Restaurant
 
 class SearchRestaurant(FormView):
     form_class = SearchForm
-    template_name = 'restaurant/search_restaurant_form.html'
+    template_name = 'search_restaurant_form.html'
     success_url = '/restaurants/results'
 
     def form_valid(self,form):
@@ -39,7 +39,7 @@ class SearchResults(View):
 
             results.append(result)
 
-        return render(request, 'restaurant/search_results.html', {'results': results})
+        return render(request, 'search_results.html', {'results': results})
 
 class AddRestaurant(View):
     def get(self, request):
@@ -56,6 +56,8 @@ class AddRestaurant(View):
             print e
             return HttpResponse('failed')
 
+class RestaurantList(ListView):
+    model = Restaurant
 
-
-
+class RestaurantDetail(DetailView):
+    model = Restaurant

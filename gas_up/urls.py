@@ -7,6 +7,7 @@ urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'gas_up.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
+    url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^restaurants/', include('restaurants.urls')),
