@@ -20,7 +20,9 @@
             {{r.rating}}
         </td>
         <td>
-            {{r.price_level|dollar_sign}}
+            {% autoescape off %}
+                {{r.price_level|dollar_sign}}
+            {% endautoescape %}
         </td>
         <td>
             <a class="add" href="{% url 'add_restaurant' %}?icon={{r.icon}}&name={{r.name}}&rating={{r.rating}}&price_level={{r.price_level}}"><button class="btn btn-warning">Add</button></a>

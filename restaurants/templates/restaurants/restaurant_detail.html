@@ -1,29 +1,49 @@
 {% extends 'base.html' %}
+{% load restaurant_list %}
 {% block content %}
 <div class="panel panel-info">
     <div class="panel-heading"><h3 class="panel-title">{{object.name}}</h3></div>
   <div class="panel-body">
     <div class="row">
-      <div class="col-md-3">
+      <div class="col-sm-3">
         <p><strong>Fueled Rating</strong></p>
         <span class="glyphicon glyphicon-fire"></span>
         {{object.total_rating}}
       </div>
-      <div class="col-md-3">
+      <div class="col-sm-3">
         <p><strong>Google Rating</strong></p>
         <span class="glyphicon glyphicon-user"></span>
         {{object.google_rating}}
       </div>
-      <div class="col-md-3">
+      <div class="col-sm-3">
         <p><strong>Price</strong></p>
-        <span class="glyphicon glyphicon-usd"></span>
-        {{object.price_level}}
+        {% autoescape off %}
+            {{object.price_level|dollar_sign}}
+        {% endautoescape %}
       </div>
-      <div class="col-md-1 pull-right">
+      <div class="col-sm-1 pull-right">
           <img src="{{object.icon}}" height="50px" width="50px" />
       </div>
     </div>
   </div>
 </div>
+<div class="panel panel-info">
+    <div class="panel-heading"><h3 class="panel-title">Comments</h3></div>
+    <div class="panel-body">
+        {% for c in comments %}
+        <div class="row">
+            <div class="col-sm-3"><span class="glyphicon glyphicon-user"></span> {{c.user.first_name}} {{c.user.last_name}}</div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8">{{c.comment}}</div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<form method="POST" action="">
+    {% csrf_token %}
+    {{form}}
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
 
 {% endblock %}

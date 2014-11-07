@@ -4,12 +4,13 @@
 <table id="search-results" class="table table-hover " style="vertical-align: middle;">
     <thead>
         <th>&nbsp;</th>
+        <th>&nbsp;</th>
         <th>Name</th>
         <th>Google Rating</th>
         <th>Price</th>
     </thead>
     {% for r in object_list|dictsortreversed:"total_rating" %}
-    <tr>
+    <tr onclick="document.location = '{% url 'restaurant_detail' pk=r.id %}';">
         <td>
             <span class="glyphicon glyphicon-thumbs-up"></span>
             <span class="glyphicon glyphicon-thumbs-down"></span>
@@ -25,7 +26,9 @@
             {{r.google_rating}}
         </td>
         <td>
+        {% autoescape off %}
             {{r.price_level|dollar_sign}}
+        {% endautoescape %}
         </td>
     </tr>
     {% endfor %}

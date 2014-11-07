@@ -4,8 +4,8 @@ import requests
 from django.http import HttpResponse
 from django.views.generic import View, FormView, ListView, DetailView
 from django.shortcuts import render, redirect
-from .forms import SearchForm
-from .models import Restaurant
+from .forms import SearchForm, CommentForm
+from .models import Restaurant, Comment
 
 class SearchRestaurant(FormView):
     form_class = SearchForm
@@ -49,15 +49,33 @@ class AddRestaurant(View):
         price_level = request.GET.get('price_level')
 
         try:
-            r, created = Restaurant.get_or_create(icon=icon, name=name, google_rating=rating, price_level=price_level)
-            print r
-            return HttpResponse('success')
-        except Exception:
+            r, created = Restaurant.objects.get_or_create(icon=icon, name=name, google_rating=rating, price_level=price_level)
+            return redirect('restaurant_list')
+        except Exception, e:
             print e
-            return HttpResponse('failed')
 
 class RestaurantList(ListView):
     model = Restaurant
 
-class RestaurantDetail(DetailView):
+class RestaurantDetail(FormView):
+    template_name = 'restaurants/restaurant_detail.html'
     model = Restaurant
+    form_class = CommentForm
+
+    def get_initial(self):
+        restaurant = Restaurant.objects.get(pk=self.kwargs['pk'])
+        return {'user':self.request.user, 'restaurant':restaurant}
+
+    def get_context_data(self, **kwargs):
+        context = super(RestaurantDetail, self).get_context_data(**kwargs)
+        context['object'] = Restaurant.objects.get(pk=self.kwargs['pk'])
+
+        comments = Comment.objects.filter(restaurant=context['object'])
+
+        context['comments'] = comments
+
+        return context
+
+    def form_valid(self, form):
+        form.save()
+        return redirect('restaurant_detail', pk=self.kwargs['pk'])

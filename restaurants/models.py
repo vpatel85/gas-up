@@ -1,8 +1,9 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Restaurant(models.Model):
     name = models.CharField(max_length=100)
-    google_rating = models.PositiveIntegerField(blank=True, null=True)
+    google_rating = models.DecimalField(blank=True, null=True, max_digits=3, decimal_places=1)
     up_vote = models.PositiveIntegerField(default=0)
     down_vote = models.PositiveIntegerField(default=0)
     price_level = models.PositiveIntegerField(blank=True, null=True)
@@ -18,3 +19,9 @@ class Restaurant(models.Model):
     def __unicode__(self):
         return '%s' % self.name
 
+class Comment(models.Model):
+    user = models.ForeignKey(User)
+    restaurant = models.ForeignKey(Restaurant)
+    comment = models.TextField()
+
+    created = models.DateTimeField(auto_now_add=True, blank=True)

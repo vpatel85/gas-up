@@ -5,6 +5,6 @@ register = template.Library()
 @register.filter
 def dollar_sign(price):
     if price:
-        return '$' * price
+        return '<span class="glyphicon glyphicon-usd"></span>' * price
     else:
         return price
