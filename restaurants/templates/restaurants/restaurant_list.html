@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load restaurant_list %}
 {% block content %}
+
 <table id="search-results" class="table table-hover " style="vertical-align: middle;">
     <thead>
         <th>&nbsp;</th>
@@ -28,9 +29,9 @@
             {{r.google_rating}}
         </td>
         <td onclick="document.location = '{% url 'restaurant_detail' pk=r.id %}';">
-        {% autoescape off %}
+            {% autoescape off %}
             {{r.price_level|dollar_sign}}
-        {% endautoescape %}
+            {% endautoescape %}
         </td>
     </tr>
     {% endfor %}

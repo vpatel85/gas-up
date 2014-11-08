@@ -2,10 +2,10 @@ import json
 import urllib
 import requests
 from django.http import HttpResponse
-from django.views.generic import View, FormView, ListView, DetailView
+from django.views.generic import View, FormView, ListView, DetailView, UpdateView
 from django.shortcuts import render, redirect
-from .forms import SearchForm, CommentForm, SubCommentForm
-from .models import Restaurant, Comment
+from .forms import SearchForm, CommentForm, SubCommentForm, UserProfileForm
+from .models import Restaurant, Comment, UserProfile
 
 class SearchRestaurant(FormView):
     form_class = SearchForm
@@ -107,3 +107,12 @@ class SubCommentView(FormView):
 
         response = HttpResponse(json.dumps(msg), content_type="application/json")
         return response
+
+class UserProfileView(UpdateView):
+    model = UserProfile
+    slug_field = 'user_id'
+    slug_url_kwarg = 'user_id'
+    form_class = UserProfileForm
+
+    #def post(self, request):
+

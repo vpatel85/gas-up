@@ -19,7 +19,7 @@ class Restaurant(models.Model):
     def __unicode__(self):
         return '%s' % self.name
 
-#Enable polymorphism model structure here to allow better comment relationship
+#abstract polymorphic model structure here to allow better comment relationship
 class Comment(models.Model):
     user = models.ForeignKey(User)
     restaurant = models.ForeignKey(Restaurant)
@@ -33,3 +33,9 @@ class SubComment(models.Model):
     comment = models.TextField()
 
     created = models.DateTimeField(auto_now_add=True, blank=True)
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User)
+    visited = models.ManyToManyField(Restaurant, related_name='visited_restaurants')
+    dislike = models.ManyToManyField(Restaurant, related_name='disliked_restaurants')
+
