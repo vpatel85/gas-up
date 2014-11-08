@@ -1,4 +1,5 @@
 (function($) {
+    //subcomment functionality
     $( ".comment .expand" ).click(function() {
         var sub_comment = $(this).parents('.comment').find('.sub-comment-form');
         if ($(this).hasClass('glyphicon-plus')) {
@@ -22,9 +23,30 @@
 
 
         $.post($(this).attr('action'), {csrfmiddlewaretoken: csrf_token, parent: parent, user: user, comment: comment}, function(response){
-            //form.find("textarea[name='comment']").val('');
             message.html(response).fadeIn(500);
         });
+    });
+
+    //up/down voting functionality
+    $('.vote').click(function(){
+        var csrf_token = $(this).siblings("input[name='csrfmiddlewaretoken']").val(),
+            restaurant_id = $(this).siblings(".restaurant_id").text(),
+            rating = $(this).siblings(".rating"),
+            vote;
+        if ($(this).hasClass('glyphicon-thumbs-down')) {
+            vote = 'down';
+            rating.text(parseInt(rating.text())-1);
+        } else {
+            vote = 'up';
+            rating.text(parseInt(rating.text())+1);
+        }
+
+        var data = {
+            csrfmiddlewaretoken: csrf_token,
+            vote: vote,
+            restaurant_id: restaurant_id
+        }
+        $.post('/restaurants/list/', data);
     });
 
 })(jQuery)

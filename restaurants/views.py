@@ -57,6 +57,18 @@ class AddRestaurant(View):
 class RestaurantList(ListView):
     model = Restaurant
 
+    def post(self, request):
+        restaurant = Restaurant.objects.get(pk=request.POST['restaurant_id'])
+        if request.POST['vote'] == 'down':
+            restaurant.down_vote += 1
+        else:
+            restaurant.up_vote += 1
+
+        restaurant.save()
+
+        response = HttpResponse(json.dumps('voted'), content_type="application/json")
+        return response
+
 class RestaurantDetail(FormView):
     template_name = 'restaurants/restaurant_detail.html'
     model = Restaurant

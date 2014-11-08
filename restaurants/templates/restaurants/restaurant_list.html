@@ -10,22 +10,24 @@
         <th>Price</th>
     </thead>
     {% for r in object_list|dictsortreversed:"total_rating" %}
-    <tr onclick="document.location = '{% url 'restaurant_detail' pk=r.id %}';">
+    <tr>
         <td>
-            <span class="glyphicon glyphicon-thumbs-up"></span>
-            <span class="glyphicon glyphicon-thumbs-down"></span>
-            {{r.total_rating}}
+            {% csrf_token %}
+            <div class="restaurant_id hidden">{{r.id}}</div>
+            <span class="glyphicon vote glyphicon-thumbs-down"></span>
+            <span class="rating">{{r.total_rating}}</span>
+            <span class="glyphicon vote glyphicon-thumbs-up"></span>
         </td>
-        <td>
+        <td onclick="document.location = '{% url 'restaurant_detail' pk=r.id %}';">
             <img src="{{r.icon}}" height="20px" width="20px"/><br>
         </td>
-        <td>
+        <td onclick="document.location = '{% url 'restaurant_detail' pk=r.id %}';">
             {{r.name}}
         </td>
-        <td>
+        <td onclick="document.location = '{% url 'restaurant_detail' pk=r.id %}';">
             {{r.google_rating}}
         </td>
-        <td>
+        <td onclick="document.location = '{% url 'restaurant_detail' pk=r.id %}';">
         {% autoescape off %}
             {{r.price_level|dollar_sign}}
         {% endautoescape %}
