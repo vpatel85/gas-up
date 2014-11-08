@@ -71,9 +71,9 @@ class RestaurantDetail(FormView):
         context['object'] = Restaurant.objects.get(pk=self.kwargs['pk'])
 
         comments = Comment.objects.filter(restaurant=context['object']).order_by('-created')
-
-        context['sub_comment_form'] = SubCommentForm()
         context['comments'] = comments
+
+        context['sub_comment_form'] = SubCommentForm(initial={'user':self.request.user})
 
         return context
 
@@ -84,21 +84,14 @@ class RestaurantDetail(FormView):
 class SubCommentView(FormView):
     form_class = SubCommentForm
 
-    def get_initial(self):
-        parent = Comment.objects.get(pk=self.kwargs['pk'])
-        return {'user':self.request.user, 'parent':parent}
-
     def post(self, request, pk):
         parent = Comment.objects.get(pk=self.kwargs['pk'])
-        form = SubCommentForm(request.POST, initial={'user':request.user, 'parent':parent})
-        print form
-
+        form = SubCommentForm(request.POST)
         if form.is_valid():
-            print 'test'
+            form.save()
+            msg = 'Thank you for your comment'
         else:
-            print 'not valid'
-            print form.errors
-        response = HttpResponse(json.dumps('test'), mimetype="application/json", content_type="application/json")
+            msg = 'This field is required'
+
+        response = HttpResponse(json.dumps(msg), content_type="application/json")
         return response
-        #form.save()
-        #return redirect('restaurant_detail', pk=self.kwargs['pk'])

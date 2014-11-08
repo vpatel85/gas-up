@@ -6,15 +6,18 @@
 
     $('.sub-comment-form form').on("submit", function(e){
         e.preventDefault();
-        test = $(this);
-        var url = $(this).attr('action'),
-            csrf_token = $(this).find("input[name='csrfmiddlewaretoken']").val(),
-            //user = $(this).find("#id_user").val(),
-            //parent = $(this).find("#id_parent").val(),
-            comment = $(this).find("textarea[name='comment']").val();
+        var form = $(this),
+            message = form.find('.message'),
+            url = form.attr('action'),
+            csrf_token = form.find("input[name='csrfmiddlewaretoken']").val(),
+            user = form.find("#id_user").val(),
+            parent = form.find("#id_parent").val(),
+            comment = form.find("textarea[name='comment']").val();
 
-        $.post($(this).attr('action'), {csrfmiddlewaretoken: csrf_token, comment: comment}, function(response){
-            //$('.sub-comment-form').html("Thank You for your comment");
+
+        $.post($(this).attr('action'), {csrfmiddlewaretoken: csrf_token, parent: parent, user: user, comment: comment}, function(response){
+            //form.find("textarea[name='comment']").val('');
+            message.html(response).fadeIn(500);
         });
     });
 

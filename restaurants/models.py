@@ -32,3 +32,4 @@ class SubComment(models.Model):
     user = models.ForeignKey(User)
     comment = models.TextField()
 
+    created = models.DateTimeField(auto_now_add=True, blank=True)

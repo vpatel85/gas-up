@@ -1,0 +1,9 @@
+<form method="POST" action="/restaurants/sub-comment/{{c.id}}/">
+    <p class="message"></p>
+    {% csrf_token %}
+    {{sub_comment_form.user}}
+    <input id="id_{{ sub_comment_form.parent.name }}" name="{{ sub_comment_form.parent.name }}" type="hidden" value="{{c.id}}">
+    {{sub_comment_form.comment}}
+    <br>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
