@@ -1,7 +1,13 @@
 (function($) {
-    $( ".comment .glyphicon-plus" ).click(function() {
+    $( ".comment .expand" ).click(function() {
         var sub_comment = $(this).parents('.comment').find('.sub-comment-form');
-        sub_comment.slideDown( "fast");
+        if ($(this).hasClass('glyphicon-plus')) {
+            $(this).removeClass('glyphicon-plus').addClass('glyphicon-minus');
+            sub_comment.slideDown( "fast");
+        } else {
+            $(this).removeClass('glyphicon-minus').addClass('glyphicon-plus');
+            sub_comment.slideUp( "fast");
+        }
     });
 
     $('.sub-comment-form form').on("submit", function(e){
