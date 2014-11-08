@@ -12,3 +12,6 @@ class BootstrapWidget(object):
 
 class BootstrapTextInput(BootstrapWidget,forms.TextInput):
     pass
+
+class BootstrapTextArea(BootstrapWidget,forms.Textarea):
+    pass

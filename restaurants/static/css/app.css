@@ -10,6 +10,23 @@ body {
     font-size: 18px;
     padding-top:10px;
 }
+.errorlist {
+    list-style: none;
+    color: #a94442;
+    padding: 0;
+}
 #search-results td {
     vertical-align: middle;
+}
+.sub-comment {
+    margin-left: 15px;
+    border-left: 2px solid #D9EDF7;
+}
+
+.comment {
+    padding: 5px 0px;
+    border-bottom: 1px solid #ddd;
+}
+.sub-comment-form {
+    display: none;
 }

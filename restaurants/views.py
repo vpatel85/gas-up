@@ -4,7 +4,7 @@ import requests
 from django.http import HttpResponse
 from django.views.generic import View, FormView, ListView, DetailView
 from django.shortcuts import render, redirect
-from .forms import SearchForm, CommentForm
+from .forms import SearchForm, CommentForm, SubCommentForm
 from .models import Restaurant, Comment
 
 class SearchRestaurant(FormView):
@@ -70,8 +70,9 @@ class RestaurantDetail(FormView):
         context = super(RestaurantDetail, self).get_context_data(**kwargs)
         context['object'] = Restaurant.objects.get(pk=self.kwargs['pk'])
 
-        comments = Comment.objects.filter(restaurant=context['object'])
+        comments = Comment.objects.filter(restaurant=context['object']).order_by('-created')
 
+        context['sub_comment_form'] = SubCommentForm()
         context['comments'] = comments
 
         return context
@@ -79,3 +80,25 @@ class RestaurantDetail(FormView):
     def form_valid(self, form):
         form.save()
         return redirect('restaurant_detail', pk=self.kwargs['pk'])
+
+class SubCommentView(FormView):
+    form_class = SubCommentForm
+
+    def get_initial(self):
+        parent = Comment.objects.get(pk=self.kwargs['pk'])
+        return {'user':self.request.user, 'parent':parent}
+
+    def post(self, request, pk):
+        parent = Comment.objects.get(pk=self.kwargs['pk'])
+        form = SubCommentForm(request.POST, initial={'user':request.user, 'parent':parent})
+        print form
+
+        if form.is_valid():
+            print 'test'
+        else:
+            print 'not valid'
+            print form.errors
+        response = HttpResponse(json.dumps('test'), mimetype="application/json", content_type="application/json")
+        return response
+        #form.save()
+        #return redirect('restaurant_detail', pk=self.kwargs['pk'])
