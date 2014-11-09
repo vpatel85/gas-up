@@ -2,6 +2,7 @@ import json
 import urllib
 import requests
 from django.http import HttpResponse
+from django.contrib.auth.models import User
 from django.views.generic import View, FormView, ListView, DetailView, UpdateView
 from django.shortcuts import render, redirect
 from .forms import SearchForm, CommentForm, SubCommentForm, UserProfileForm
@@ -109,10 +110,12 @@ class SubCommentView(FormView):
         return response
 
 class UserProfileView(UpdateView):
-    model = UserProfile
-    slug_field = 'user_id'
-    slug_url_kwarg = 'user_id'
+    model = User
     form_class = UserProfileForm
+    template_name = 'restaurants/userprofile_form.html'
 
-    #def post(self, request):
-
+    def form_valid(self, form):
+        form.save()
+        print form.errors
+        return redirect('restaurant_list')
+        #return super(UserProfileView, self).form_valid(form)

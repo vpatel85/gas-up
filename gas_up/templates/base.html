@@ -21,7 +21,7 @@
             <a href="{% url 'restaurant_list' %}">Gas Up</a>
         </div>
         <div class="pull-right user-info">
-            <a href="{% url 'user-profile' user_id=user.id %}"><span class="glyphicon glyphicon-user"></span> {{user.first_name}} {{user.last_name}}</a>
+            <a href="{% url 'user-profile' pk=user.id %}"><span class="glyphicon glyphicon-user"></span> {{user.first_name}} {{user.last_name}}</a>
         </div>
     </div>
 </div>
@@ -38,7 +38,7 @@
                 <div class="panel-body">
                     <div class="list-group">
                         {% for d in user.userprofile.visited.all %}
-                        <a href="{% url 'restaurant_detail' pk=d.id %}"class="list-group-item">{{d}}</a>
+                        <div class="list-group-item"><a href="{% url 'restaurant_detail' pk=d.id %}">{{d}}</a><span onclick="remove_restaurant()" class="glyphicon glyphicon-remove-circle pull-right"></span></div>
                         {% endfor %}
                     </div>
                 </div>

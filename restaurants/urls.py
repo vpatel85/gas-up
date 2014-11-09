@@ -9,5 +9,5 @@ urlpatterns = patterns('restaurants.views',
         url(r'^list/', login_required(RestaurantList.as_view()), name='restaurant_list'),
         url(r'^(?P<pk>\d+)/', login_required(RestaurantDetail.as_view()), name='restaurant_detail'),
         url(r'^sub-comment/(?P<pk>\d+)/', login_required(SubCommentView.as_view()), name='sub-comment'),
-        url(r'^user/(?P<user_id>\d+)', login_required(UserProfileView.as_view()), name='user-profile'),
+        url(r'^user/(?P<pk>\d+)', login_required(UserProfileView.as_view()), name='user-profile'),
 )

@@ -1,6 +1,7 @@
 from django import forms
 from gas_up.forms import BootstrapTextInput, BootstrapTextArea
 from .models import Comment, SubComment, UserProfile
+from django.contrib.auth.models import User
 from django.contrib.admin.widgets import FilteredSelectMultiple
 
 class SearchForm(forms.Form):
@@ -26,8 +27,17 @@ class SubCommentForm(forms.ModelForm):
                 }
 
 class UserProfileForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(UserProfileForm, self).__init__(*args, **kwargs)
+        self.fields['first_name'].required = True
+        self.fields['last_name'].required = True
+        self.fields['email'].required = True
+
     class Meta:
-        model = UserProfile
+        model = User
+        fields = ['first_name', 'last_name', 'email']
         widgets = {
-                'visited': FilteredSelectMultiple("visited restaurants", is_stacked=False),
+                'first_name': BootstrapTextInput,
+                'last_name': BootstrapTextInput,
+                'email': BootstrapTextInput,
                 }

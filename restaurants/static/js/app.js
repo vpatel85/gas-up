@@ -49,4 +49,9 @@
         $.post('/restaurants/list/', data);
     });
 
+    //remove restaurants from visited and dislike list
+    function remove_restaurant(){
+    
+    }
+
 })(jQuery)
