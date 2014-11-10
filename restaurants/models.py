@@ -27,6 +27,9 @@ class Comment(models.Model):
 
     created = models.DateTimeField(auto_now_add=True, blank=True)
 
+    def __unicode__(self):
+        return '%s -%s-%s' % (self.user, self.restaurant, self.comment)
+
 class SubComment(models.Model):
     parent = models.ForeignKey(Comment)
     user = models.ForeignKey(User)
@@ -34,8 +37,14 @@ class SubComment(models.Model):
 
     created = models.DateTimeField(auto_now_add=True, blank=True)
 
+    def __unicode__(self):
+        return '%s ->%s-%s' % (self.user, self.parent.id, self.comment)
+
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
     visited = models.ManyToManyField(Restaurant, related_name='visited_restaurants')
     dislike = models.ManyToManyField(Restaurant, related_name='disliked_restaurants')
+
+    def __unicode__(self):
+        return '%s' % self.user
 
