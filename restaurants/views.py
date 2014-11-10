@@ -1,17 +1,19 @@
 import json
 import urllib
 import requests
+from django.conf import settings
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.views.generic import View, FormView, ListView, DetailView, UpdateView
 from django.shortcuts import render, redirect
+from django.core.urlresolvers import reverse_lazy
 from .forms import SearchForm, CommentForm, SubCommentForm, UserProfileForm
 from .models import Restaurant, Comment, UserProfile
 
 class SearchRestaurant(FormView):
     form_class = SearchForm
     template_name = 'search_restaurant_form.html'
-    success_url = '/restaurants/results'
+    success_url = reverse_lazy('search_results')
 
     def form_valid(self,form):
         response = redirect('search_results')
@@ -19,14 +21,16 @@ class SearchRestaurant(FormView):
         return response
 
 class SearchResults(View):
+    api_key = settings.GOOGLE_API_KEY
+
     def get(self, request):
 
         #need to make this whole thing better
-        geo = requests.get("https://maps.googleapis.com/maps/api/geocode/json?address=%s&API_KEY=AIzaSyC_gRLQGYxjQ7ij56u-kFTTA2USh_gxnmw" % request.GET.get('query')).json()
+        geo = requests.get("https://maps.googleapis.com/maps/api/geocode/json?address=%s&API_KEY=%s" % (request.GET.get('query'), self.api_key)).json()
 
         location = geo['results'][0]['geometry']['location']
 
-        places = requests.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=%s,%s&radius=500&types=food&key=AIzaSyC_gRLQGYxjQ7ij56u-kFTTA2USh_gxnmw' % (location['lat'], location['lng'])).json()
+        places = requests.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=%s,%s&radius=500&types=food&key=%s' % (location['lat'], location['lng'], self.api_key)).json()
 
         results = []
         for p in places['results']:
@@ -56,7 +60,9 @@ class AddRestaurant(View):
             print e
 
 class RestaurantList(ListView):
-    model = Restaurant
+    #model = Restaurant
+    queryset = Restaurant.objects.all()
+    context_object_name = 'restaurant'
 
     def post(self, request):
         restaurant = Restaurant.objects.get(pk=request.POST['restaurant_id'])
@@ -116,6 +122,24 @@ class UserProfileView(UpdateView):
 
     def form_valid(self, form):
         form.save()
-        print form.errors
         return redirect('restaurant_list')
         #return super(UserProfileView, self).form_valid(form)
+
+class RemoveRestaurant(View):
+
+    def post(self, request, pk):
+        user_profile = UserProfile.objects.get(user=request.user)
+
+        if request.POST['group'] == 'visited':
+            if request.POST['action'] == 'remove':
+                user_profile.visited.remove(user_profile.visited.get(pk=pk).id)
+            elif request.POST['action'] == 'add':
+                user_profile.visited.add(Restaurant.objects.get(pk=pk).id)
+        elif request.POST['group'] == 'dislike':
+            if request.POST['action'] == 'remove':
+                user_profile.dislike.remove(user_profile.dislike.get(pk=pk).id)
+            elif request.POST['action'] == 'add':
+                user_profile.dislike.add(Restaurant.objects.get(pk=pk).id)
+
+        response = HttpResponse(json.dumps('removed'), content_type="application/json")
+        return response

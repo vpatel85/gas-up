@@ -10,14 +10,14 @@
         <th>Google Rating</th>
         <th>Price</th>
     </thead>
-    {% for r in object_list|dictsortreversed:"total_rating" %}
+    {% for r in restaurant|dictsortreversed:"total_rating" %}
     <tr>
         <td>
             {% csrf_token %}
             <div class="restaurant_id hidden">{{r.id}}</div>
-            <span class="glyphicon vote glyphicon-thumbs-down"></span>
+            <span class="glyphicon vote glyphicon glyphicon-arrow-up"></span>
             <span class="rating">{{r.total_rating}}</span>
-            <span class="glyphicon vote glyphicon-thumbs-up"></span>
+            <span class="glyphicon vote glyphicon glyphicon-arrow-down"></span>
         </td>
         <td onclick="document.location = '{% url 'restaurant_detail' pk=r.id %}';">
             <img src="{{r.icon}}" height="20px" width="20px"/><br>

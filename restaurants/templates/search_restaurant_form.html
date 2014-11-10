@@ -1,8 +1,6 @@
-{% extends 'base.html' %}
-{% block content %}
-<form method="post" action=".">
+<form method="post" action="/restaurants/search/">
     {% csrf_token %}
-    {{form}}
+    {{search_form}}
+    <br/>
     <button type="submit" class="btn btn-primary">Search</button>
 </form>
-{% endblock %}

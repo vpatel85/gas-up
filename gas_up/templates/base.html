@@ -38,7 +38,7 @@
                 <div class="panel-body">
                     <div class="list-group">
                         {% for d in user.userprofile.visited.all %}
-                        <div class="list-group-item"><a href="{% url 'restaurant_detail' pk=d.id %}">{{d}}</a><span onclick="remove_restaurant()" class="glyphicon glyphicon-remove-circle pull-right"></span></div>
+                        <div class="list-group-item"><a href="{% url 'restaurant_detail' pk=d.id %}">{{d}}</a><span onclick="remove_restaurant({{d.id}}, '{{ csrf_token }}', this, 'visited')" class="glyphicon glyphicon-remove-circle pull-right"></span></div>
                         {% endfor %}
                     </div>
                 </div>
@@ -50,12 +50,20 @@
                 <div class="panel-body">
                     <div class="list-group">
                         {% for d in user.userprofile.dislike.all %}
-                        <a href="{% url 'restaurant_detail' pk=d.id %}"class="list-group-item">{{d}}</a>
+                        <div class="list-group-item"><a href="{% url 'restaurant_detail' pk=d.id %}">{{d}}</a><span onclick="remove_restaurant({{d.id}}, '{{ csrf_token }}', this, 'dislike')" class="glyphicon glyphicon-remove-circle pull-right"></span></div>
                         {% endfor %}
                     </div>
                 </div>
             </div>
             {% endif %}
+            <div class="panel panel-default">
+                <div class="panel-heading">Add Reastaurant</div>
+                <div class="panel-body">
+                    <div class="list-group">
+                        {% include 'search_restaurant_form.html' %}
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

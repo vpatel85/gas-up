@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.admin.widgets import FilteredSelectMultiple
 
 class SearchForm(forms.Form):
-     search = forms.CharField(widget=BootstrapTextInput)
+     search = forms.CharField(widget=BootstrapTextInput, label='Search by address')
 
 class CommentForm(forms.ModelForm):
 

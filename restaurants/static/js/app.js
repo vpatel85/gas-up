@@ -21,9 +21,11 @@
             parent = form.find("#id_parent").val(),
             comment = form.find("textarea[name='comment']").val();
 
-
         $.post($(this).attr('action'), {csrfmiddlewaretoken: csrf_token, parent: parent, user: user, comment: comment}, function(response){
-            message.html(response).fadeIn(500);
+            message.html(response).fadeIn(500, function(){
+                //make more ajaxy later
+                location.reload();
+            });
         });
     });
 
@@ -49,9 +51,16 @@
         $.post('/restaurants/list/', data);
     });
 
-    //remove restaurants from visited and dislike list
-    function remove_restaurant(){
-    
-    }
-
 })(jQuery)
+
+//function to remove restaurants from hated/visited lists
+function remove_restaurant(id, csrf_token, item, group) {
+    $.post('/restaurants/remove/'+id+'/', {csrfmiddlewaretoken: csrf_token, group: group, action:'remove'}, function(){
+        $(item).parent().fadeOut();
+    });
+}
+function add_restaurant(id, csrf_token, group) {
+    $.post('/restaurants/remove/'+id+'/', {csrfmiddlewaretoken: csrf_token, group: group, action:'add'}, function(){
+        $('span.msg').fadeIn();
+    });
+}

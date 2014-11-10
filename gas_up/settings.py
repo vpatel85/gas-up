@@ -90,4 +90,22 @@ TEMPLATE_DIRS = (
     (os.path.join(BASE_DIR, "gas_up", "templates"),)
 )
 
+#TEMPLATE_CONTEXT_PROCESSORS = (
+    #"restaurants.context_processors.search_form",
+    #"django.contrib.auth.context_processors.auth",
+    #"django.core.context_processors.debug",
+    #"django.core.context_processors.i18n",
+    #"django.core.context_processors.media",
+    #"django.core.context_processors.static",
+    #"django.core.context_processors.request",
+    #"django.core.context_processors.tz",
+    #"django.contrib.messages.context_processors.messages"
+#)
+import django.conf.global_settings as DEFAULT_SETTINGS
+
+TEMPLATE_CONTEXT_PROCESSORS = DEFAULT_SETTINGS.TEMPLATE_CONTEXT_PROCESSORS + (
+    'restaurants.context_processors.search_form',
+)
+
+
 GOOGLE_API_KEY = 'AIzaSyAcflQY-JWPWdnSSH-uJXpV2tPecMuOEjk'
