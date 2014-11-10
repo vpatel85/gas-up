@@ -14,7 +14,7 @@ Picking the perfect lunch destination
 ```pip install -r requirements.txt```
 
 4. Sync database and migrate
-```python manage.py syndb```
+```python manage.py syndb```\n
 ```python manage.py migrate```
 
 5. Collect static
@@ -25,8 +25,8 @@ Picking the perfect lunch destination
 
 
 ***USERS***
-jdorian/fueled
-ereed/fueled
-cturk/fueled
+jdorian/fueled \n
+ereed/fueled \n
+cturk/fueled \n
 
 HAVE FUN!
