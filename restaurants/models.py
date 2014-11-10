@@ -8,6 +8,9 @@ class Restaurant(models.Model):
     down_vote = models.PositiveIntegerField(default=0)
     price_level = models.PositiveIntegerField(blank=True, null=True)
     icon = models.URLField(null=True)
+    lat = models.CharField(max_length=20)
+    lng = models.CharField(max_length=20)
+    formatted_address = models.CharField(max_length=500)
 
     created = models.DateTimeField(auto_now_add=True, blank=True)
     updated = models.DateTimeField(auto_now=True)
@@ -19,7 +22,7 @@ class Restaurant(models.Model):
     def __unicode__(self):
         return '%s' % self.name
 
-#abstract polymorphic model structure here to allow better comment relationship
+#abstract polymorphic model structure here to allow better comment relationship (generic relationship)
 class Comment(models.Model):
     user = models.ForeignKey(User)
     restaurant = models.ForeignKey(Restaurant)
@@ -28,7 +31,7 @@ class Comment(models.Model):
     created = models.DateTimeField(auto_now_add=True, blank=True)
 
     def __unicode__(self):
-        return '%s -%s-%s' % (self.user, self.restaurant, self.comment)
+        return '%s-%s-%s' % (self.user, self.restaurant, self.comment)
 
 class SubComment(models.Model):
     parent = models.ForeignKey(Comment)
@@ -38,7 +41,7 @@ class SubComment(models.Model):
     created = models.DateTimeField(auto_now_add=True, blank=True)
 
     def __unicode__(self):
-        return '%s ->%s-%s' % (self.user, self.parent.id, self.comment)
+        return '%s-%s-%s' % (self.user, self.parent.id, self.comment)
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User)

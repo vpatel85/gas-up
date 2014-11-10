@@ -25,7 +25,7 @@
             {% endautoescape %}
         </td>
         <td>
-            <a class="add" href="{% url 'add_restaurant' %}?icon={{r.icon}}&name={{r.name}}&rating={{r.rating}}&price_level={{r.price_level}}"><button class="btn btn-warning">Add</button></a>
+            <a class="add" href="{% url 'add_restaurant' %}?icon={{r.icon}}&name={{r.name}}&rating={{r.rating}}&price_level={{r.price_level}}&lat={{r.lat}}&lng={{r.lng}}"><button class="btn btn-warning">Add</button></a>
         </td>
     </tr>
     {% endfor %}

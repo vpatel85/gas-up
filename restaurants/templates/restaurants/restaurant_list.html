@@ -8,6 +8,7 @@
         <th>&nbsp;</th>
         <th>&nbsp;</th>
         <th>Name</th>
+        <th>Address</th>
         <th>Google Rating</th>
         <th>Price</th>
     </thead>
@@ -26,6 +27,9 @@
         </td>
         <td onclick="document.location = '{% url 'restaurant_detail' pk=r.id %}';">
             {{r.name}}
+        </td>
+        <td onclick="document.location = '{% url 'restaurant_detail' pk=r.id %}';">
+            {{r.formatted_address}}
         </td>
         <td onclick="document.location = '{% url 'restaurant_detail' pk=r.id %}';">
             {{r.google_rating}}

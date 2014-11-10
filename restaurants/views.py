@@ -42,23 +42,35 @@ class SearchResults(View):
             if 'price_level' in p:
                 result['price_level']= p['price_level']
 
+            p_location = p['geometry']['location']
+            result['lat'] = p_location['lat']
+            result['lng'] = p_location['lng']
+
             results.append(result)
 
         return render(request, 'search_results.html', {'results': results})
 
 class AddRestaurant(View):
+    api_key = settings.GOOGLE_API_KEY
+
     def get(self, request):
         icon = request.GET.get('icon')
         name = request.GET.get('name')
         rating = request.GET.get('rating')
         price_level = request.GET.get('price_level')
+        lat = request.GET.get('lat')
+        lng = request.GET.get('lng')
 
+        #get address of added restaurant
+        address = requests.get('https://maps.googleapis.com/maps/api/geocode/json?latlng=%s,%s&key=%s' % (lat, lng, self.api_key)).json()
+        formatted_address = address['results'][0]['formatted_address']
         #add restaurant from search to DB
         try:
-            r, created = Restaurant.objects.get_or_create(icon=icon, name=name, google_rating=rating, price_level=price_level)
+            r, created = Restaurant.objects.get_or_create(icon=icon, name=name, google_rating=rating, price_level=price_level, lat=lat, lng=lng, formatted_address=formatted_address)
             return redirect('restaurant_list')
         except Exception, e:
             print e
+            return redirect('search_results?query=%s' % request.GET.get('query'))
 
 class RestaurantList(ListView):
     model = Restaurant
@@ -124,7 +136,6 @@ class UserProfileView(UpdateView):
     def form_valid(self, form):
         form.save()
         return redirect('restaurant_list')
-        #return super(UserProfileView, self).form_valid(form)
 
 class RemoveRestaurantUser(View):
 

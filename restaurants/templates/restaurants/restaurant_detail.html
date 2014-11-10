@@ -5,11 +5,11 @@
     <div class="panel-heading">
 
         <div class="row">
-        <div class="col-sm-3">
-        <h3 class="panel-title" style="margin-top:8px;">{{object.name}}</h3>
-    </div>
-        <div class="col-sm-3 pull-right">
-            <button class="btn btn-success {% if user.userprofile.visited.all %}disabled{% endif %}" onclick="add_restaurant({{object.pk}}, '{{csrf_token}}', 'visited')"><span class="glyphicon glyphicon-map-marker"></span> Visited</button>
+            <div class="col-sm-3">
+                <h3 class="panel-title" style="margin-top:8px;">{{object.name}}</h3>
+            </div>
+            <div class="col-sm-3 pull-right">
+                <button class="btn btn-success {% if user.userprofile.visited.all %}disabled{% endif %}" onclick="add_restaurant({{object.pk}}, '{{csrf_token}}', 'visited')"><span class="glyphicon glyphicon-map-marker"></span> Visited</button>
                 <button class="btn btn-danger {% if user.userprofile.dislike.all %}disabled{% endif %}" onclick="add_restaurant({{object.pk}}, '{{csrf_token}}', 'dislike')"><span class="glyphicon glyphicon-thumbs-down"></span> Hate</button>
             </div>
             <span class="msg pull-right">Preference Saved</span>
@@ -34,7 +34,11 @@
                 {{object.price_level|dollar_sign}}
                 {% endautoescape %}
             </div>
-                        <div class="col-sm-1 pull-right">
+            <div class="col-sm-6">
+                <p><strong>Address</strong></p>
+                {{object.formatted_address}}
+            </div>
+            <div class="col-sm-1 pull-right">
                 <img src="{{object.icon}}" height="50px" width="50px" />
             </div>
         </div>
@@ -75,9 +79,9 @@
 
                 </div>
             </div>
-        <div class="sub-comment-form">
-            {% include 'restaurants/sub_comment.html' %}
-        </div>
+            <div class="sub-comment-form">
+                {% include 'restaurants/sub_comment.html' %}
+            </div>
         </div>
         {% endfor %}
 
