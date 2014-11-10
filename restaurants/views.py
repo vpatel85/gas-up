@@ -69,6 +69,7 @@ class AddRestaurant(View):
             r, created = Restaurant.objects.get_or_create(icon=icon, name=name, google_rating=rating, price_level=price_level, lat=lat, lng=lng, formatted_address=formatted_address)
             return redirect('restaurant_list')
         except Exception, e:
+            #add better exception catching
             print e
             return redirect('search_results?query=%s' % request.GET.get('query'))
 
