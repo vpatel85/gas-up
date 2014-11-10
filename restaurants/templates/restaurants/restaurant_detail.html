@@ -9,8 +9,8 @@
                 <h3 class="panel-title" style="margin-top:8px;">{{object.name}}</h3>
             </div>
             <div class="col-sm-3 pull-right">
-                <button class="btn btn-success {% if user.userprofile.visited.all %}disabled{% endif %}" onclick="add_restaurant({{object.pk}}, '{{csrf_token}}', 'visited')"><span class="glyphicon glyphicon-map-marker"></span> Visited</button>
-                <button class="btn btn-danger {% if user.userprofile.dislike.all %}disabled{% endif %}" onclick="add_restaurant({{object.pk}}, '{{csrf_token}}', 'dislike')"><span class="glyphicon glyphicon-thumbs-down"></span> Hate</button>
+                <button class="btn btn-success {% if object in user.userprofile.visited.all %}disabled{% endif %}" onclick="add_restaurant({{object.pk}}, '{{csrf_token}}', 'visited')"><span class="glyphicon glyphicon-map-marker"></span> Visited</button>
+                <button class="btn btn-danger {% if  object in user.userprofile.dislike.all %}disabled{% endif %}" onclick="add_restaurant({{object.pk}}, '{{csrf_token}}', 'dislike')"><span class="glyphicon glyphicon-thumbs-down"></span> Hate</button>
             </div>
             <span class="msg pull-right">Preference Saved</span>
         </div>
@@ -28,13 +28,13 @@
                 <span class="glyphicon glyphicon-star"></span>
                 {{object.google_rating}}
             </div>
-            <div class="col-sm-1">
+            <div class="col-sm-2">
                 <p><strong>Price</strong></p>
                 {% autoescape off %}
                 {{object.price_level|dollar_sign}}
                 {% endautoescape %}
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-5">
                 <p><strong>Address</strong></p>
                 {{object.formatted_address}}
             </div>
@@ -44,6 +44,7 @@
         </div>
     </div>
 </div>
+{% if comments %}
 <div class="panel panel-info">
     <div class="panel-heading"><h3 class="panel-title">Comments</h3></div>
     <div class="panel-body">
@@ -52,13 +53,15 @@
             <div class="row">
                 <div class="col-sm-12">
                     <span class="glyphicon glyphicon-plus expand pull-right"></span>
-                    <span class="glyphicon glyphicon-user"></span><span class="{% if user == c.user %}text-primary"{% endif %}> {{c.user.first_name}} {{c.user.last_name}} </span>
+                    <span class="glyphicon glyphicon-user"></span><span class="{% if user == c.user %}text-primary"{% endif %}"> {{c.user.first_name}} {{c.user.last_name}} </span>
                     <div class="pull-right created-date">{{c.created}}</div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-sm-12">
+                    {% autoescape off %}
                     {{c.comment}}
+                    {% endautoescape %}
                     {%for s in c.subcomment_set.all %}
                     <div class="row sub-comment">
                         <div class="col-sm-12">
@@ -70,13 +73,14 @@
                             </div>
                             <div class="row">
                                 <div class="col-sm-11">
+                                    {% autoescape off %}
                                     {{s.comment}}
+                                    {% endautoescape %}
                                 </div>
                             </div>
                         </div>
                     </div>
                     {% endfor %}
-
                 </div>
             </div>
             <div class="sub-comment-form">
@@ -84,14 +88,13 @@
             </div>
         </div>
         {% endfor %}
-
     </div>
 </div>
-<form method="POST" action="">
-    {% csrf_token %}
-    {{form}}
-    <br>
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
-
+{% endif %}
+    <form method="POST" action="">
+        {% csrf_token %}
+        {{form}}
+        <br>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
 {% endblock %}

@@ -35,7 +35,7 @@
             restaurant_id = $(this).siblings(".restaurant_id").text(),
             rating = $(this).siblings(".rating"),
             vote;
-        if ($(this).hasClass('glyphicon-thumbs-down')) {
+        if ($(this).hasClass('glyphicon-arrow-down')) {
             vote = 'down';
             rating.text(parseInt(rating.text())-1);
         } else {

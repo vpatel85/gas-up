@@ -18,9 +18,15 @@ Picking the perfect lunch destination
 ```python manage.py migrate```
 
 5. Collect static
-```python manage.py collectstatic````
+```python manage.py collectstatic```
 
 6. Start runserver
 ```python manage.py runserver 0.0.0.0```
+
+
+***USERS***
+jdorian/fueled
+ereed/fueled
+cturk/fueled
 
 HAVE FUN!
