@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     #3rd Party
     'south',
+    'rest_framework',
     #Apps
     'restaurants',
 )
@@ -107,5 +108,12 @@ TEMPLATE_CONTEXT_PROCESSORS = DEFAULT_SETTINGS.TEMPLATE_CONTEXT_PROCESSORS + (
     'restaurants.context_processors.search_form',
 )
 
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
 
 GOOGLE_API_KEY = 'AIzaSyAcflQY-JWPWdnSSH-uJXpV2tPecMuOEjk'

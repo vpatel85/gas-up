@@ -55,12 +55,12 @@
 
 //function to remove restaurants from hated/visited lists
 function remove_restaurant(id, csrf_token, item, group) {
-    $.post('/restaurants/remove/'+id+'/', {csrfmiddlewaretoken: csrf_token, group: group, action:'remove'}, function(){
+    $.post('/restaurants/user-remove/'+id+'/', {csrfmiddlewaretoken: csrf_token, group: group}, function(){
         $(item).parent().fadeOut();
     });
 }
 function add_restaurant(id, csrf_token, group) {
-    $.post('/restaurants/remove/'+id+'/', {csrfmiddlewaretoken: csrf_token, group: group, action:'add'}, function(){
+    $.post('/restaurants/user-add/'+id+'/', {csrfmiddlewaretoken: csrf_token, group: group}, function(){
         $('span.msg').fadeIn();
     });
 }

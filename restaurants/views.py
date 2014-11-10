@@ -25,7 +25,7 @@ class SearchResults(View):
 
     def get(self, request):
 
-        #need to make this whole thing better
+        #gets places based on address provided in search
         geo = requests.get("https://maps.googleapis.com/maps/api/geocode/json?address=%s&API_KEY=%s" % (request.GET.get('query'), self.api_key)).json()
 
         location = geo['results'][0]['geometry']['location']
@@ -53,6 +53,7 @@ class AddRestaurant(View):
         rating = request.GET.get('rating')
         price_level = request.GET.get('price_level')
 
+        #add restaurant from search to DB
         try:
             r, created = Restaurant.objects.get_or_create(icon=icon, name=name, google_rating=rating, price_level=price_level)
             return redirect('restaurant_list')
@@ -60,8 +61,7 @@ class AddRestaurant(View):
             print e
 
 class RestaurantList(ListView):
-    #model = Restaurant
-    queryset = Restaurant.objects.all()
+    model = Restaurant
     context_object_name = 'restaurant'
 
     def post(self, request):
@@ -104,6 +104,7 @@ class SubCommentView(FormView):
     form_class = SubCommentForm
 
     def post(self, request, pk):
+        print request.POST
         parent = Comment.objects.get(pk=self.kwargs['pk'])
         form = SubCommentForm(request.POST)
         if form.is_valid():
@@ -125,21 +126,29 @@ class UserProfileView(UpdateView):
         return redirect('restaurant_list')
         #return super(UserProfileView, self).form_valid(form)
 
-class RemoveRestaurant(View):
+class RemoveRestaurantUser(View):
 
     def post(self, request, pk):
         user_profile = UserProfile.objects.get(user=request.user)
 
         if request.POST['group'] == 'visited':
-            if request.POST['action'] == 'remove':
-                user_profile.visited.remove(user_profile.visited.get(pk=pk).id)
-            elif request.POST['action'] == 'add':
-                user_profile.visited.add(Restaurant.objects.get(pk=pk).id)
+            user_profile.visited.remove(user_profile.visited.get(pk=pk).id)
         elif request.POST['group'] == 'dislike':
-            if request.POST['action'] == 'remove':
-                user_profile.dislike.remove(user_profile.dislike.get(pk=pk).id)
-            elif request.POST['action'] == 'add':
-                user_profile.dislike.add(Restaurant.objects.get(pk=pk).id)
+            user_profile.dislike.remove(user_profile.dislike.get(pk=pk).id)
 
         response = HttpResponse(json.dumps('removed'), content_type="application/json")
+        return response
+
+class AddRestaurantUser(View):
+
+    def post(self, request, pk):
+        print 'test'
+        user_profile = UserProfile.objects.get(user=request.user)
+
+        if request.POST['group'] == 'visited':
+            user_profile.visited.add(Restaurant.objects.get(pk=pk).id)
+        elif request.POST['group'] == 'dislike':
+            user_profile.dislike.add(Restaurant.objects.get(pk=pk).id)
+
+        response = HttpResponse(json.dumps('added'), content_type="application/json")
         return response

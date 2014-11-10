@@ -2,6 +2,7 @@
 {% load restaurant_list %}
 {% block content %}
 
+{% if restaurant %}
 <table id="search-results" class="table table-hover " style="vertical-align: middle;">
     <thead>
         <th>&nbsp;</th>
@@ -11,6 +12,7 @@
         <th>Price</th>
     </thead>
     {% for r in restaurant|dictsortreversed:"total_rating" %}
+    {% if r not in user.userprofile.dislike.all %}
     <tr>
         <td>
             {% csrf_token %}
@@ -34,6 +36,10 @@
             {% endautoescape %}
         </td>
     </tr>
+    {% endif %}
     {% endfor %}
 </table>
+    {% else %}
+    <h3>Please add some restaurants, by using the search in the sidebar.</h3>
+    {% endif %}
 {% endblock %}
