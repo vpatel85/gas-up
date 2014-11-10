@@ -21,5 +21,5 @@ Picking the perfect lunch destination
 ```python manage.py collectstatic````
 
 6. Start runserver
-```python manage.py runserver 0.0.0.0
+```python manage.py runserver 0.0.0.0```
 
