@@ -53,7 +53,7 @@
             <div class="row">
                 <div class="col-sm-12">
                     <span class="glyphicon glyphicon-plus expand pull-right"></span>
-                    <span class="glyphicon glyphicon-user"></span><span class="{% if user == c.user %}text-primary"{% endif %}"> {{c.user.first_name}} {{c.user.last_name}} </span>
+                    <span class="glyphicon glyphicon-user"></span><span class="{% if user == c.user %}text-primary{% endif %}"> {{c.user.first_name}} {{c.user.last_name}} </span>
                     <div class="pull-right created-date">{{c.created}}</div>
                 </div>
             </div>
@@ -67,7 +67,7 @@
                         <div class="col-sm-12">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <span class="glyphicon glyphicon-user"></span><span class="{% if user == s.user %}text-primary"{% endif %}> {{s.user.first_name}} {{s.user.last_name}}</span> 
+                                    <span class="glyphicon glyphicon-user"></span><span class="{% if user == s.user %}text-primary{% endif %}"> {{s.user.first_name}} {{s.user.last_name}}</span> 
                                     <div class="pull-right created-date">{{s.created}}</div>
                                 </div>
                             </div>
