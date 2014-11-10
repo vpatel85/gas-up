@@ -23,3 +23,4 @@ Picking the perfect lunch destination
 6. Start runserver
 ```python manage.py runserver 0.0.0.0```
 
+HAVE FUN!
